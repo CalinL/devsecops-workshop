@@ -23,7 +23,7 @@ jobs:
             -v "${{ github.workspace }}:/devopsshield" \
             --rm -t \
             -e dosOrganizationName=${{ github.repository_owner }} \
-            -e dosPatToken=${{ secrets.GITHUB_TOKEN }} \
+            -e dosPatToken=${{ secrets.TOKEN_FOR_DOS }} \
             -e dosType=GitHub \
             devopsshield/devopsshield
           ls ${{ github.workspace }}
