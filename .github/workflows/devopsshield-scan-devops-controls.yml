@@ -1,0 +1,40 @@
+name: DOS-SecurityScanner
+on:
+  workflow_dispatch:
+
+permissions:
+  security-events: write
+  actions: read
+  contents: read
+  
+jobs:
+  run_devopsshield_scanner:
+    name: DevOps Shield Security Scanner
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4.1.0
+      - name: DevOps Shield Security Scanner Linux
+        run: |-
+          # Run DevOps Shield CLI with dosType=GitHub for current repository
+          docker run --name devopsshield \
+            -v "${{ github.workspace }}:/devopsshield" \
+            --rm -t \
+            -e dosOrganizationName=${{ github.repository_owner }} \
+            -e dosPatToken=${{ secrets.GITHUB_TOKEN }} \
+            -e dosType=GitHub \
+            devopsshield/devopsshield
+          ls ${{ github.workspace }}
+          cat ${{ github.workspace }}/DevOpsShield-SecurityScanner-Report.sarif
+          cat ${{ github.workspace }}/DevOpsShield-SecurityScanner-Report.csv
+          mkdir "${{ github.workspace }}/devops-shield-reports-linux"
+          cp ${{ github.workspace }}/DevOpsShield-SecurityScanner-Report.sarif "${{ github.workspace }}/devops-shield-reports-linux"
+          cp ${{ github.workspace }}/DevOpsShield-SecurityScanner-Report.csv "${{ github.workspace }}/devops-shield-reports-linux"
+        shell: bash
+      - name: Upload DevOps Shield Reports
+        uses: actions/upload-artifact@v4.1.0
+        with:
+          name: devops-shield-reports-linux
+          path: "${{ github.workspace }}/devops-shield-reports-linux"  
