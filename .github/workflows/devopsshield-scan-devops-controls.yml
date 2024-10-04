@@ -37,4 +37,8 @@ jobs:
         uses: actions/upload-artifact@v4.1.0
         with:
           name: devops-shield-reports-linux
-          path: "${{ github.workspace }}/devops-shield-reports-linux"  
+          path: "${{ github.workspace }}/devops-shield-reports-linux" 
+      - name: Upload results to Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ github.workspace }}/DevOpsShield-SecurityScanner-Report.sarif
