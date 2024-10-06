@@ -26,7 +26,6 @@ jobs:
             -e dosPatToken=${{ secrets.TOKEN_FOR_DOS }} \
             -e dosType=GitHub \
             devopsshield/devopsshield
-          ls ${{ github.workspace }}
           cat ${{ github.workspace }}/DevOpsShield-SecurityScanner-Report.sarif
           cat ${{ github.workspace }}/DevOpsShield-SecurityScanner-Report.csv
           mkdir "${{ github.workspace }}/devops-shield-reports-linux"
